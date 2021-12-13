@@ -64,7 +64,7 @@ func (rm *ResponseManager) processUpdate(key responseKey, update gsmsg.GraphSync
 	}
 
 	_, span := otel.Tracer("graphsync").Start(trace.ContextWithSpan(rm.ctx, response.span), "processUpdate", trace.WithAttributes(
-		attribute.Int("id", int(update.ID())),
+		attribute.String("id", update.ID().String()),
 		attribute.StringSlice("extensions", update.ExtensionNames()),
 	))
 	defer span.End()
@@ -179,7 +179,7 @@ func (rm *ResponseManager) processRequests(p peer.ID, requests []gsmsg.GraphSync
 		rm.connManager.Protect(p, request.ID().Tag())
 		ctx := rm.requestQueuedHooks.ProcessRequestQueuedHooks(p, request, rm.ctx)
 		ctx, responseSpan := otel.Tracer("graphsync").Start(ctx, "response", trace.WithAttributes(
-			attribute.Int("id", int(request.ID())),
+			attribute.String("id", request.ID().String()),
 			attribute.Int("priority", int(request.Priority())),
 			attribute.String("root", request.Root().String()),
 			attribute.StringSlice("extensions", request.ExtensionNames()),

@@ -3,7 +3,6 @@ package responsemanager
 import (
 	"context"
 	"errors"
-	"math/rand"
 	"sync"
 	"testing"
 	"time"
@@ -1121,7 +1120,7 @@ func newTestData(t *testing.T) testData {
 		Name: td.extensionName,
 		Data: td.extensionUpdateData,
 	}
-	td.requestID = graphsync.RequestID(rand.Int31())
+	td.requestID = graphsync.NewRequestID()
 	td.requests = []gsmsg.GraphSyncRequest{
 		gsmsg.NewRequest(td.requestID, td.blockChain.TipLink.(cidlink.Link).Cid, td.blockChain.Selector(), graphsync.Priority(0), td.extension),
 	}
