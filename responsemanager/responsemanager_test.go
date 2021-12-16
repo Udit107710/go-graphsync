@@ -3,6 +3,7 @@ package responsemanager
 import (
 	"context"
 	"errors"
+	"math/rand"
 	"sync"
 	"testing"
 	"time"
@@ -1299,7 +1300,7 @@ func (td *testData) notifyStatusMessagesSent() {
 
 func (td *testData) notifyBlockSendsSent() {
 	td.transactionLk.Lock()
-	td.notifeePublisher.PublishEvents(notifications.Topic(rand.Int31), []notifications.Event{
+	td.notifeePublisher.PublishEvents(notifications.Topic(graphsync.NewRequestID), []notifications.Event{
 		messagequeue.Event{Name: messagequeue.Sent, Metadata: messagequeue.Metadata{BlockData: td.blkNotifications}},
 	})
 	td.blkNotifications = make(map[graphsync.RequestID][]graphsync.BlockData)
